@@ -163,7 +163,7 @@ echo ${NAME}
 
 #------------------------------------------------
 # run for each pt bin
-for index in {1..1}; do
+for index in {1..27}; do
     cd jp${index}/working/ \
 	&& cp param_histo.indat_template param_histo.indat;
     sleep 0.2; # give the system some breaks to start all this stuff in parallel -- reduces crashes somehow
