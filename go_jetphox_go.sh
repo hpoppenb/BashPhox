@@ -129,41 +129,68 @@ elif [ "${8}" == "9.0" ]; then
     NAME="${NAME}_90"    
 fi
 #------------------------------------------------
-# pt binning
-PTBINS[0]=0.1
-PTBINS[1]=0.2
-PTBINS[2]=0.3
-PTBINS[3]=0.5
-PTBINS[4]=1.
-PTBINS[5]=2.
-PTBINS[6]=3.5
-PTBINS[7]=5.5
-PTBINS[8]=8.0
-PTBINS[9]=11.0
-PTBINS[10]=14.5
-PTBINS[11]=18.5
-PTBINS[12]=23.0
-PTBINS[13]=28.0
-PTBINS[14]=33.0
-PTBINS[15]=38.0
-PTBINS[16]=43.0
-PTBINS[17]=48.0
-PTBINS[18]=53.0
-PTBINS[19]=58.0
-PTBINS[20]=63.0
-PTBINS[21]=69.0
-PTBINS[22]=75.0
-PTBINS[23]=81.0
-PTBINS[24]=87.0
-PTBINS[25]=93.0
-PTBINS[26]=99.0
-PTBINS[27]=105.0
+# pt binning for studying lowest pt (possible in combination with large scales)
+#PTBINS[0]=0.1
+#PTBINS[1]=0.2
+#PTBINS[2]=0.3
+#PTBINS[3]=0.5
+#PTBINS[4]=1.
+#PTBINS[5]=2.
+#PTBINS[6]=3.5
+#PTBINS[7]=5.5
+#PTBINS[8]=8.0
+#PTBINS[9]=11.0
+#PTBINS[10]=14.5
+#PTBINS[11]=18.5
+#PTBINS[12]=23.0
+#PTBINS[13]=28.0
+#PTBINS[14]=33.0
+#PTBINS[15]=38.0
+#PTBINS[16]=43.0
+#PTBINS[17]=48.0
+#PTBINS[18]=53.0
+#PTBINS[19]=58.0
+#PTBINS[20]=63.0
+#PTBINS[21]=69.0
+#PTBINS[22]=75.0
+#PTBINS[23]=81.0
+#PTBINS[24]=87.0
+#PTBINS[25]=93.0
+#PTBINS[26]=102.0
+
+#------------------------------------------------
+# default pt binning
+MAXBIN=24
+PTBINS[1]=0.5
+PTBINS[2]=1.
+PTBINS[3]=2.
+PTBINS[4]=3.5
+PTBINS[5]=5.5
+PTBINS[6]=8.0
+PTBINS[7]=11.0
+PTBINS[8]=14.5
+PTBINS[9]=18.5
+PTBINS[10]=23.0
+PTBINS[11]=28.0
+PTBINS[12]=33.0
+PTBINS[13]=38.0
+PTBINS[14]=43.0
+PTBINS[15]=48.0
+PTBINS[16]=53.0
+PTBINS[17]=58.0
+PTBINS[18]=63.0
+PTBINS[19]=69.0
+PTBINS[20]=75.0
+PTBINS[21]=81.0
+PTBINS[22]=87.0
+PTBINS[23]=93.0
+PTBINS[MAXBIN]=102.0
 
 echo ${NAME}
 
 #------------------------------------------------
 # run for each pt bin
-for index in {1..27}; do
+for index in {1..${MAXBIN}}; do
     cd jp${index}/working/ \
 	&& cp param_histo.indat_template param_histo.indat;
     sleep 0.2; # give the system some breaks to start all this stuff in parallel -- reduces crashes somehow
@@ -210,14 +237,14 @@ touch do_hadd_${NAME}.sh
 if [ ${9} == "dir" ]
 then
     cat <<EOF >do_hadd_${NAME}.sh
-hadd -k ${NAME}.root jp{1..27}/${NAME}/ggd${NAME}.root
+hadd -k ${NAME}.root jp{1..${MAXBIN}}/${NAME}/ggd${NAME}.root
 EOF
 fi
 
 if [ ${9} == "onef" ]
 then
     cat <<EOF >do_hadd_${NAME}.sh
-hadd -k ${NAME}.root jp{1..27}/${NAME}/ggo${NAME}.root
+hadd -k ${NAME}.root jp{1..${MAXBIN}}/${NAME}/ggo${NAME}.root
 EOF
 fi
 
