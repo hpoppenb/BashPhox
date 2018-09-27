@@ -160,37 +160,37 @@ fi
 
 #------------------------------------------------
 # default pt binning
-MAXBIN=24
-PTBINS[1]=0.5
-PTBINS[2]=1.
-PTBINS[3]=2.
-PTBINS[4]=3.5
-PTBINS[5]=5.5
-PTBINS[6]=8.0
-PTBINS[7]=11.0
-PTBINS[8]=14.5
-PTBINS[9]=18.5
-PTBINS[10]=23.0
-PTBINS[11]=28.0
-PTBINS[12]=33.0
-PTBINS[13]=38.0
-PTBINS[14]=43.0
-PTBINS[15]=48.0
-PTBINS[16]=53.0
-PTBINS[17]=58.0
-PTBINS[18]=63.0
-PTBINS[19]=69.0
-PTBINS[20]=75.0
-PTBINS[21]=81.0
-PTBINS[22]=87.0
-PTBINS[23]=93.0
+MAXBIN=23
+PTBINS[0]=0.5
+PTBINS[1]=1.
+PTBINS[2]=2.
+PTBINS[3]=3.5
+PTBINS[4]=5.5
+PTBINS[5]=8.0
+PTBINS[6]=11.0
+PTBINS[7]=14.5
+PTBINS[8]=18.5
+PTBINS[9]=23.0
+PTBINS[10]=28.0
+PTBINS[11]=33.0
+PTBINS[12]=38.0
+PTBINS[13]=43.0
+PTBINS[14]=48.0
+PTBINS[15]=53.0
+PTBINS[16]=58.0
+PTBINS[17]=63.0
+PTBINS[18]=69.0
+PTBINS[19]=75.0
+PTBINS[20]=81.0
+PTBINS[21]=87.0
+PTBINS[22]=93.0
 PTBINS[MAXBIN]=102.0
 
 echo ${NAME}
 
 #------------------------------------------------
 # run for each pt bin
-for index in {1..${MAXBIN}}; do
+for index in $(eval echo {1..$(eval echo $MAXBIN)}); do
     cd jp${index}/working/ \
 	&& cp param_histo.indat_template param_histo.indat;
     sleep 0.2; # give the system some breaks to start all this stuff in parallel -- reduces crashes somehow
