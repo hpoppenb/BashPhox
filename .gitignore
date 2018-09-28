@@ -1,0 +1,5 @@
+*.o
+jp*/
+*root
+do*.sh
+*.a
