@@ -18,4 +18,7 @@ rm -rf */*LO*
 echo removing log files
 rm */working/log/*
 
+echo removing *~
+rm *~
+
 exit $?

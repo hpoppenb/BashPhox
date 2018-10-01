@@ -68,7 +68,7 @@ NAME="${NAME}_${CMSENERGY}GeV"
 if [ "${NUMBEROFEVENTS}" -ge "1000000" ]; then
     EVTSSTRING=$( expr $( expr ${NUMBEROFEVENTS} - $( expr ${NUMBEROFEVENTS} % 1000000) ) / 1000000 )
     EVTSSTRING="${EVTSSTRING}M"
-NAME="${NAME}_${NUMBEROFEVENTS}evts"
+    NAME="${NAME}_${EVTSSTRING}evts"
 fi
 
 #-----------------------------
