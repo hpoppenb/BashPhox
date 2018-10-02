@@ -1,5 +1,5 @@
 *.o
 jp*/
 *root
-do*.sh
+merge*.sh
 *.a
