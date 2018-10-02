@@ -1,0 +1,14 @@
+The time it takes for a Jetphox run depends on many factors like pt, scale choice, even PDF choice...
+But here are some rough numbers to plan with:
+
+There is a baseline that always has to be calculated before events are calculated:
+-- dir LO ~1min
+-- frag LO ~12min
+-- dir NLO ~50min
+-- frag NLO ~6h
+
+On top comes the calculation time per event:
+-- dir  LO  takes 1h per 100M events
+-- frag LO  takes 6h per 100M events 
+-- dir  NLO takes 3 1/2h per 100M events
+-- frag NLO takes 18-30h per 100M events
