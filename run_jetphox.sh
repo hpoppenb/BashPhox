@@ -201,7 +201,7 @@ for index in $(eval echo {1..$(eval echo $MAXBIN)}); do
 	&& sed -i 's/NUMBEROFEVENTS/'${NUMBEROFEVENTS}'/g' parameter.indat \
 	&& sed -i 's/RANDOMSEED/'${RANDOMSEED}'/g' parameter.indat;
     perl start.pl \
-	&& sbatch submitJobsSLURM.sh run${NAME}.exe &
+	&& sbatch submitJobSLURM.sh run${NAME}.exe &
     cd ../..
 done
 #------------------------------------------------

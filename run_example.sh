@@ -2,7 +2,7 @@
 
 DATE=`date +%Y_%m_%d`
 RANDOMX=10003
-NEVENTS=50000000
+NEVENTS=20000000
 
 #------------------------
 # isolated photons
