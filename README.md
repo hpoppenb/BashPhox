@@ -37,10 +37,11 @@ After you have merged everything correctly, you can tidy up the directories with
 --------------------------------------------------
 ### Additional notes
  - In the current version, the script starts a SLURM script in the respective working directory. If you do not use SLURM, you have to replace this script according to your respective job scheduler.
- - You have to specify your ROOT path in each jp*/working/Makefile
- - You have to specify your LHAPDF path in each jp*/working/parameter.indat_template
+ - You have to specify your ROOT path in each jp*/working/Makefile.
+ - You have to specify your LHAPDF path in each jp*/working/parameter.indat_template.
  - There is an example script generating isolated photon spectra at 13 TeV in four pt bins.
- - The program was tested with LHAPDF 6.1.6., Jetphox 1.3.1.4, ROOT6, Scientific Linux 7, GCC 4.8.5
+ - The program was tested with LHAPDF 6.1.6., Jetphox 1.3.1.4, ROOT6, Scientific Linux 7, GCC 4.8.5.
+ - If compilation fails, do "make clean" in the working directory, try again and pray for the mercy of the Fortran god.
 
 --------------------------------------------------
 
