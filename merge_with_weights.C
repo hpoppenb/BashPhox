@@ -1,14 +1,16 @@
-void merge_with_weights(TString fileName1 = "2018_09_28_dir_LO_5020GeV_100000000evts_pp_CT14nlo_incl_iso5020GeVinR04_scl_10_10_10.root",
-			TString fileName2 = "2018_09_28_dir_LO_5020GeV_100000000evts_pp_CT14nlo_incl_iso5020GeVinR04_scl_10_10_10.root"){
+// If you have to produce additional events:
+// This is a simple macro to merge two jetphox root files
+// with appropriate weighting per event
+void merge_with_weights(TString fileName1 = "2018_09_28_dir_LO_5020GeV_100Mevts_pp_CT14nlo_incl_iso5020GeVinR04_scl_10_10_10.root",
+			TString fileName2 = "2018_09_28_dir_LO_5020GeV_200Mevts_pp_CT14nlo_incl_iso5020GeVinR04_scl_10_10_10.root"){
 
   TFile *f1 = new TFile(fileName1);
   TFile *f2 = new TFile(fileName2);
 
-  f1->ls();
-
   TObjArray* ar1 = fileName1.Tokenize("_");
   TObjArray* ar2 = fileName2.Tokenize("_");
 
+  // Index of token containing number of events may vary
   TObjString* evtObjString1 = (TObjString*)ar1->At(6);
   TObjString* evtObjString2 = (TObjString*)ar2->At(6);
 
@@ -27,6 +29,7 @@ void merge_with_weights(TString fileName1 = "2018_09_28_dir_LO_5020GeV_100000000
   double nEvents1 = evtString1.Atof();
   double nEvents2 = evtString2.Atof();
 
+  // NB: Sumw2() is already called on jetphox histos
   TH1D *hp20_1 = (TH1D*)f1->Get("hp20");
   TH1D *hp21_1 = (TH1D*)f1->Get("hp21");
   TH1D *hp20_2 = (TH1D*)f2->Get("hp20");
