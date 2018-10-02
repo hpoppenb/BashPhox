@@ -20,10 +20,10 @@ RANDOMX=10003
 NEVENTS=2000000
 
 ### 13000 GeV DIRECT ###
-sh run_jetphox.sh $DATE 0 0 CT14nlo 0 1.0 1.0 1.0 dir  TRUE 13000 0.9 -0.9 0 0.4 2.0 $NEVENTS $RANDOMX
+bash run_jetphox.sh $DATE 0 0 CT14nlo 0 1.0 1.0 1.0 dir  TRUE 13000 0.9 -0.9 0 0.4 2.0 $NEVENTS $RANDOMX
 
 ### 13000 GeV FRAG ###
-sh run_jetphox.sh $DATE 0 0 CT14nlo 0 1.0 1.0 1.0 onef TRUE 13000 0.9 -0.9 0 0.4 2.0 $NEVENTS $RANDOMX
+bash run_jetphox.sh $DATE 0 0 CT14nlo 0 1.0 1.0 1.0 onef TRUE 13000 0.9 -0.9 0 0.4 2.0 $NEVENTS $RANDOMX
 ```
 
 --------------------------------------------------
@@ -37,7 +37,8 @@ After you have merged everything correctly, you can tidy up the directories with
 --------------------------------------------------
 ### Additional notes
  - In the current version, the script starts a SLURM script in the respective working directory. If you do not use SLURM, you have to replace this script according to your respective job scheduler.
- - You have to specify your LHAPDF and ROOT paths in each jp*/working/Makefile
+ - You have to specify your ROOT path in each jp*/working/Makefile
+ - You have to specify your LHAPDF path in each jp*/working/parameter.indat_template
  - There is an example script generating isolated photon spectra at 13 TeV in four pt bins.
  - The program was tested with LHAPDF 6.1.6., Jetphox 1.3.1.4, ROOT6, Scientific Linux 7, GCC 4.8.5
 
