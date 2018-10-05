@@ -135,7 +135,7 @@ if ($set_ff > 15) {
 bkk kkp kretzer bfgwbest bfgwlarge bfgwlow kkks08 );
 if ( ($set_ff <= 4) || ($set_ff == 7) || ($set_ff == 11) ) {
 $dir_ff = $tab_nom_ff[$set_ff-1];
-$path_ff = "../frag/".$tab_nom_ff[$set_ff-1];
+$path_ff = "../../frag/".$tab_nom_ff[$set_ff-1];
 system("ln -f -s $path_ff .");}
 # link for nPDF sets
 $npdfset=$hash_var{"nuclear_pdf"};
@@ -145,7 +145,7 @@ if ( ($npdfset >=601)&&($npdfset<=631) ){
   $npdfset=6;
 }
 $dir_npdf = $tab_nom_npdf[$npdfset-1];
-$path_npdf = "../pdfa/".$tab_nom_npdf[$npdfset-1];
+$path_npdf = "../../pdfa/".$tab_nom_npdf[$npdfset-1];
 system("ln -f -s $path_npdf .");}
 ################################################################################
 # modifie le Makefile si necessaire
