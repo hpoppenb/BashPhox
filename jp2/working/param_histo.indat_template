@@ -135,4 +135,4 @@ rad
 # - the maximal value of the abscissa for y variable
 ########################################################################
 histo_equi pt_gamma nlo ['MINRAP',y_gamma,'MAXRAP'] d#sigma^{#gamma}_{PROCESSSTRING,ORDERSTRING}/dp_{T}^{#gamma}(MINRAP<y<MAXRAP) 1000 0. 100.
-histo_equi y_gamma nlo [] d#sigma^{#gamma}_{PROCESSSTRING,ORDERSTRING}/dy^{#gamma} 100 -5. 5.
+histo_equi y_gamma nlo [] d#sigma^{#gamma}_{PROCESSSTRING,ORDERSTRING}/dy^{#gamma} 200 -10. 10.

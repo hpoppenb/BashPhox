@@ -39,11 +39,10 @@ histo
 #
 #
 #########################################################################
-# Type of initial hadron H1:0 proton, 1 anti-proton, aaazzz nucleus
-#
+# Type of initial hadron H1:0 proton, 1 anti-proton, aaazzz nucleus, 2 second pdf (see below)
 TYPEHADRONBEAM1
 #########################################################################
-# Type of initial hadron H2:0 proton, 1 anti-proton, aaazzz nucleus
+# Type of initial hadron H2:0 proton, 1 anti-proton, aaazzz nucleus, 2 second pdf (see below)
 #
 TYPEHADRONBEAM2
 #########################################################################
@@ -63,7 +62,10 @@ TYPEHADRONBEAM2
 #
 #lhapdf5.xxx      cteq66.LHgrid
 #lhapdf6.xxx      cteq66
-LHAPDFNAME
+LHAPDFNAME1
+#########################################################################
+# second pdf possible, see hadron type above
+LHAPDFNAME2
 #########################################################################
 # select the member set of the pdf, for central value choose 0
 0
@@ -83,7 +85,9 @@ FALSE
 # 7 HKN07
 # 8 FGS10 (set I)
 # 9 FGS10 (set II)
-NPDFSET
+# Hendrik: always 0 in this modified version
+# -> use directly LHAPDFNAME1 and LHAPDFNAME2
+0
 ################################################################
 #                     FRAGMENTATION FUNCTION
 #########################################################################
@@ -327,7 +331,9 @@ ISOENERGY
 #PARAMETERS FOR JETS
 #########################################################################
 # flag to choose inclusive mode or photon+jet; inclusive: 0, jets: 1
-INCLUSIVEORWITHJET
+# BEWARE: from version 1.3.1.3 to 1.3.1.4 the developers silently removed
+# this option, the line has to stay blank!
+
 ##########################################################################
 # choice of jet algorithm: "kt": Durham kt, "co": cone, "se": with seeds
 # or "d0": midpoint algorithm (to be used with "ho" merging rules)

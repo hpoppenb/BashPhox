@@ -22,19 +22,7 @@ c ih = 0 fonctions de distribution dans le proton
 	    m2 = q2min
 	  endif
 	  m = dsqrt(m2)
-	  call evolvepdfM(1,x,m,dxpdf)
-	  f(0) = dxpdf(0)/x
-	  do i=1,6
-	    f(i) = dxpdf(i)/x
-	    f(-i) = dxpdf(-i)/x
-	  enddo
-	else if (ih.eq.2) then
-c ih = 2 uses the second pdf given in parameter.indat
-	  if (m2.lt.q2min) then
-	    m2 = q2min
-	  endif
-	  m = dsqrt(m2)
-	  call evolvepdfM(2,x,m,dxpdf)
+	  call evolvepdf(x,m,dxpdf)
 	  f(0) = dxpdf(0)/x
 	  do i=1,6
 	    f(i) = dxpdf(i)/x

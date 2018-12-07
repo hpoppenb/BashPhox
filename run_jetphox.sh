@@ -6,47 +6,42 @@ if [ "$1" == "-h" ]; then
 [IS scale] [renorm. scale] [FS scale] \
 [process] [HigherOrderTRUEorFALSE] \
 [cmsenergy in gev] [maxrap] [minrap] \
-[Inclusive=0 or withJet=1] \
 [iso cone radius] [iso energy] \
 [number of events] [randomseed]"
     exit 0
 fi
 
-if [ "$#" -ne 18 ]; then
+if [ "$#" -ne 15 ]; then
     echo "Illegal number of parameters"
     echo "Usage: `basename $0` [prefix] [typeHadronBeam1=aaazzz] [typeHadronBeam2=aaazzz] \
 [lhapdfname] [jetphoxNPDFset] \
 [IS scale] [renorm. scale] [FS scale] \
 [process] [HigherOrderTRUEorFALSE] \
 [cmsenergy in gev] [maxrap] [minrap] \
-[Inclusive=0 or withJet=1] \
 [iso cone radius] [iso energy] \
 [number of events] [randomseed]"
     exit 0
 fi    
 
 PREFIX=${1}
-TYPEHADRONBEAM1=${2}
-TYPEHADRONBEAM2=${3}
-LHAPDFNAME=${4}
-NPDFSET=${5}
-ISSCALE=${6}
-RENORMSCALE=${7}
-FSSCALE=${8}
-PROCESSSWITCH=${9}
-HIGHERORDERSWITCH=${10}
-CMSENERGY=${11}
-MAXRAP=${12}
-MINRAP=${13}
-INCLUSIVEORWITHJETS=${14}
-ISOCONERADIUS=${15}
-ISOENERGY=${16}
-NUMBEROFEVENTS=${17}
-RANDOMSEED=${18}
+LHAPDFNAME1=${2}
+LHAPDFNAME2=${3}
+ISSCALE=${4}
+RENORMSCALE=${5}
+FSSCALE=${6}
+PROCESSSWITCH=${7}
+HIGHERORDERSWITCH=${8}
+CMSENERGY=${9}
+MAXRAP=${10}
+MINRAP=${11}
+ISOCONERADIUS=${12}
+ISOENERGY=${13}
+NUMBEROFEVENTS=${14}
+RANDOMSEED=${15}
 #------------------------------------------------
 #------------------------------------------------
 # construct output file name
-# a la "dir_NLO_13000GeV_300000evts_pPb_pdf1_pdf2_incl_iso2GeVinR03_scl05_20_10.root
+# a la "dir_NLO_13000GeV_300000evts_pdf1_pdf2_iso2GeVinR03_scl05_20_10.root
 NAME="${PREFIX}_"
 if [ "${PROCESSSWITCH}" == "dir" ]; then
     PROCESSSTRING="dir"
@@ -71,37 +66,13 @@ if [ "${NUMBEROFEVENTS}" -ge "1000000" ]; then
     NAME="${NAME}_${EVTSSTRING}evts"
 fi
 #-----------------------------
-if [ "${TYPEHADRONBEAM1}" == "0" ]; then
-    if [ "${TYPEHADRONBEAM2}" == "0" ]; then
-	NAME="${NAME}_pp"
-    fi
-fi
-if [ "${TYPEHADRONBEAM1}" == "0" ]; then
-    if [ "${TYPEHADRONBEAM2}" == "208082" ]; then
-	NAME="${NAME}_pPb"    
-    fi
-fi
-if [ "${TYPEHADRONBEAM1}" == "208082" ]; then
-    if [ "${TYPEHADRONBEAM2}" == "0" ]; then
-	NAME="${NAME}_Pbp"    
-    fi
-fi
-if [ "${TYPEHADRONBEAM1}" == "208082" ]; then
-    if [ "${TYPEHADRONBEAM2}" == "208082" ]; then
-	NAME="${NAME}_PbPb"    
-    fi
-fi
-#-----------------------------
-NAME="${NAME}_${LHAPDFNAME}" # pdfname
-if [ "${NPDFSET}" -eq "6" ]; then
-    NAME="${NAME}_EPS09"
+NAME="${NAME}_${LHAPDFNAME1}_${LHAPDFNAME2}" # pdf names for both beams
+TYPEHADRONBEAM1=0
+TYPEHADRONBEAM2=2
+if [ "${LHAPDFNAME1}" == "${LHAPDFNAME2}" ]; then
+    TYPEHADRONBEAM2=0    
 fi
 
-if [ "${INCLUSIVEORWITHJET}" == "0" ]; then
-    NAME="${NAME}_incl"
-elif [ "${INCLUSIVEORWITHJET}" == "1" ]; then
-    NAME="${NAME}_gammajet"    
-fi
 #-----------------------------
 NAME="${NAME}_iso${ISOENERGY}GeV"
 if [ "${ISOCONERADIUS}" == "0.4" ]; then
@@ -183,8 +154,8 @@ for index in $(eval echo {1..$(eval echo $MAXBIN)}); do
 	&& sed -i 's/NAMEEXECUTABLEFILE/'${NAME}'/g' parameter.indat \
 	&& sed -i 's/TYPEHADRONBEAM1/'${TYPEHADRONBEAM1}'/g' parameter.indat \
 	&& sed -i 's/TYPEHADRONBEAM2/'${TYPEHADRONBEAM2}'/g' parameter.indat \
-	&& sed -i 's/LHAPDFNAME/'${LHAPDFNAME}'/g' parameter.indat \
-	&& sed -i 's/NPDFSET/'${NPDFSET}'/g' parameter.indat \
+	&& sed -i 's/LHAPDFNAME1/'${LHAPDFNAME1}'/g' parameter.indat \
+	&& sed -i 's/LHAPDFNAME2/'${LHAPDFNAME2}'/g' parameter.indat \
 	&& sed -i 's/ISSCALE/'${ISSCALE}'/g' parameter.indat \
 	&& sed -i 's/RENORMSCALE/'${RENORMSCALE}'/g' parameter.indat \
 	&& sed -i 's/FSSCALE/'${FSSCALE}'/g' parameter.indat \
@@ -195,7 +166,6 @@ for index in $(eval echo {1..$(eval echo $MAXBIN)}); do
 	&& sed -i 's/MINRAP/'${MINRAP}'/g' parameter.indat \
 	&& sed -i 's/PTMAXGEN/'${PTBINS[${index}]}'/g' parameter.indat \
 	&& sed -i 's/PTMINGEN/'${PTBINS[$(($index-1))]}'/g' parameter.indat \
-	&& sed -i 's/INCLUSIVEORWITHJET/'${INCLUSIVEORWITHJET}'/g' parameter.indat \
 	&& sed -i 's/ISOCONERADIUS/'${ISOCONERADIUS}'/g' parameter.indat \
 	&& sed -i 's/ISOENERGY/'${ISOENERGY}'/g' parameter.indat \
 	&& sed -i 's/NUMBEROFEVENTS/'${NUMBEROFEVENTS}'/g' parameter.indat \

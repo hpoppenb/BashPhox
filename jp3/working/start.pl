@@ -29,7 +29,7 @@ unless ($base_dir) {
 %hash_ntuple = ("dir" => "ggd","onef" => "ggo");
 %hash_var = ();
 @list_var_clef = qw/path_bs nom_histo path_histo choix_histo H1 H2
- lhapdf_path choix_pdf choix_member error_pdf nuclear_pdf frag choix_scale 
+ lhapdf_path choix_pdf1 choix_pdf2 choix_member error_pdf nuclear_pdf frag choix_scale 
  cm_M cm_mu cm_MF loop_alfaem loop_alfas active_flavour hbarr_c box_nobox
  ptm r_th choix_process ho lo integ_function integ_abs_function generation 
  collider_fixe_target sqrt_s ymax ymin ptmax ptmin flag_iso r_isol etmax ifjet 
@@ -234,7 +234,8 @@ foreach $process (@list_process) {
   print ES "'$name_dir/' \t\t path for the .bs file\n";
   print ES "'$name_path' \t\t path for the ntuple\n";
 # ordre inverse : le code LHAGLUE puis le type des hadrons h1 et h2
-  print ES "$hash_var{\"choix_pdf\"} \t\t LHAGLUE code\n";
+  print ES "$hash_var{\"choix_pdf1\"} \t\t LHAGLUE code\n";
+  print ES "$hash_var{\"choix_pdf2\"} \t\t LHAGLUE code\n";
   print ES "$hash_var{\"choix_member\"} \t\t member of the pdf\n";
   print ES "$hash_var{\"error_pdf\"} \t\t Flag pdf errors\n";
   print ES "$hash_var{\"H1\"} \t\t type of hadron H1:0 proton, 1 anti-proton,  aaazzz nucleus\n";

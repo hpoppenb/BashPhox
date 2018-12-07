@@ -60,8 +60,7 @@ c	common/coup_histo/r_isol,etmax
 	common/nucleus/ish
 	common/w50513/xmin,xmax,q2min,q2max
 	common/pdf_parameter/ilist_member,flag_pdf_error,val_pdf
-        character*128 name_pdf1
-        character*128 name_pdf2
+        character*128 name_pdf
 	common/seed_bases/iseed
       
 c initialisation vecteur pdfs
@@ -82,12 +81,10 @@ c nom pour le chemin ou se trouverons les fichiers .rz et .res
 	write (8,*) 'path_rzfile=',path_rzfile(1:ilenrz)
 c determination dans lhapdf des fonctions de distribution dans 
 c le hadron h1
-	read *,name_pdf1
-	write(8,*) 'value(1)=',name_pdf1
-	read *,name_pdf2
-	write(8,*) 'value(2)=',name_pdf2
+	read *,name_pdf
+	write(8,*) 'value(1)=',name_pdf
 	read *,ichoix_member
-	write(8,*) 'value(3)=',ichoix_member
+	write(8,*) 'value(2)=',ichoix_member
 	read *, flag_pdf_error 
 	write(8,*) 'pdf_error=',flag_pdf_error
 c ih1 et ih2 determine le choix des particules initiales, ih = 0:
@@ -104,11 +101,10 @@ c on suppose que value = valuep, c'est a dire que l'on peut calculer
 c pp ou ppbar (ou meme pN) mais pas p-pion ou p-photon
 c	call SetLHAPARM('SILENT')
 c	call  InitPDFsetByName('cteq66.LHgrid')
-	call  InitPDFsetByNameM(1,trim(name_pdf1))
-	call  InitPDFsetByNameM(2,trim(name_pdf2))
+	call  InitPDFsetByName(trim(name_pdf))
 c	call pdfset(parm,value) ! change
-c	call initpdf(ichoix_member)
-c	call numberPDF(ilist_member)
+       call initpdf(ichoix_member)
+	call numberPDF(ilist_member)
 	print*, 'test ilist_member ',ilist_member
       call GetXmin(0,xmin)
       call GetXmax(0,xmax)
