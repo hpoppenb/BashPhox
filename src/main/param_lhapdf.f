@@ -86,8 +86,10 @@ c le hadron h1
 	write(8,*) 'value(1)=',name_pdf1
 	read *,name_pdf2
 	write(8,*) 'value(2)=',name_pdf2
-	read *,ichoix_member
-	write(8,*) 'value(3)=',ichoix_member
+	read *,ichoix_member1
+	write(8,*) 'value(3)=',ichoix_member1
+	read *,ichoix_member2
+	write(8,*) 'value(4)=',ichoix_member2
 	read *, flag_pdf_error 
 	write(8,*) 'pdf_error=',flag_pdf_error
 c ih1 et ih2 determine le choix des particules initiales, ih = 0:
@@ -108,6 +110,8 @@ c	call  InitPDFsetByName('cteq66.LHgrid')
 	call  InitPDFsetByNameM(2,trim(name_pdf2))
 c	call pdfset(parm,value) ! change
 c	call initpdf(ichoix_member)
+	call initPDFM(1,ichoix_member1)
+	call initPDFM(2,ichoix_member2)
 c	call numberPDF(ilist_member)
 	print*, 'test ilist_member ',ilist_member
       call GetXmin(0,xmin)
