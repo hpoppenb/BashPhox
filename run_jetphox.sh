@@ -2,7 +2,7 @@
 
 if [ "$1" == "-h" ]; then
     echo "Usage: `basename $0` [prefix] [typeHadronBeam1=aaazzz] [typeHadronBeam2=aaazzz] \
-[lhapdfname] [jetphoxNPDFset] \
+[LHAPDFName1] [pdfMemberName1] [LHAPDFName2] [pdfMemberName2] \
 [IS scale] [renorm. scale] [FS scale] \
 [process] [HigherOrderTRUEorFALSE] \
 [cmsenergy in gev] [maxrap] [minrap] \
@@ -11,7 +11,7 @@ if [ "$1" == "-h" ]; then
     exit 0
 fi
 
-if [ "$#" -ne 15 ]; then
+if [ "$#" -ne 17 ]; then
     echo "Illegal number of parameters"
     echo "Usage: `basename $0` [prefix] [typeHadronBeam1=aaazzz] [typeHadronBeam2=aaazzz] \
 [lhapdfname] [jetphoxNPDFset] \
@@ -25,19 +25,21 @@ fi
 
 PREFIX=${1}
 LHAPDFNAME1=${2}
-LHAPDFNAME2=${3}
-ISSCALE=${4}
-RENORMSCALE=${5}
-FSSCALE=${6}
-PROCESSSWITCH=${7}
-HIGHERORDERSWITCH=${8}
-CMSENERGY=${9}
-MAXRAP=${10}
-MINRAP=${11}
-ISOCONERADIUS=${12}
-ISOENERGY=${13}
-NUMBEROFEVENTS=${14}
-RANDOMSEED=${15}
+PDFMEMBER1=${3}
+LHAPDFNAME2=${4}
+PDFMEMBER2=${5}
+ISSCALE=${6}
+RENORMSCALE=${7}
+FSSCALE=${8}
+PROCESSSWITCH=${9}
+HIGHERORDERSWITCH=${10}
+CMSENERGY=${11}
+MAXRAP=${12}
+MINRAP=${13}
+ISOCONERADIUS=${14}
+ISOENERGY=${15}
+NUMBEROFEVENTS=${16}
+RANDOMSEED=${17}
 #------------------------------------------------
 #------------------------------------------------
 # construct output file name
@@ -66,7 +68,7 @@ if [ "${NUMBEROFEVENTS}" -ge "1000000" ]; then
     NAME="${NAME}_${EVTSSTRING}evts"
 fi
 #-----------------------------
-NAME="${NAME}_${LHAPDFNAME1}_${LHAPDFNAME2}" # pdf names for both beams
+NAME="${NAME}_${LHAPDFNAME1}_${PDFMEMBER1}_${LHAPDFNAME2}_${PDFMEMBER2}" # pdf names for both beams
 TYPEHADRONBEAM1=0
 TYPEHADRONBEAM2=2
 if [ "${LHAPDFNAME1}" == "${LHAPDFNAME2}" ]; then
@@ -121,14 +123,23 @@ elif [ "${FSSCALE}" == "5.0" ]; then
 elif [ "${FSSCALE}" == "9.0" ]; then
     NAME="${NAME}_90"    
 fi
+
 #------------------------------------------------
 #------------------------------------------------
 # example pt binning
-MAXBIN=4
-PTBINS[0]=10.
-PTBINS[1]=20.
-PTBINS[2]=35.
-PTBINS[3]=55.
+MAXBIN=12
+PTBINS[0]=1.5
+PTBINS[1]=3.
+PTBINS[2]=5.
+PTBINS[3]=8.
+PTBINS[4]=12.
+PTBINS[5]=17.
+PTBINS[6]=23.
+PTBINS[7]=31.
+PTBINS[8]=40.
+PTBINS[9]=52.
+PTBINS[10]=66.
+PTBINS[11]=82.
 PTBINS[$MAXBIN]=100.
 #------------------------------------------------
 #------------------------------------------------
@@ -136,6 +147,7 @@ echo ""
 echo "Following name is used for directory and root file:"
 echo ${NAME}
 echo "----------------------------------------------------"
+
 #------------------------------------------------
 #------------------------------------------------
 # modify config file, compile, and run with job scheduler for each pt bin
@@ -155,7 +167,9 @@ for index in $(eval echo {1..$(eval echo $MAXBIN)}); do
 	&& sed -i 's/TYPEHADRONBEAM1/'${TYPEHADRONBEAM1}'/g' parameter.indat \
 	&& sed -i 's/TYPEHADRONBEAM2/'${TYPEHADRONBEAM2}'/g' parameter.indat \
 	&& sed -i 's/LHAPDFNAME1/'${LHAPDFNAME1}'/g' parameter.indat \
+	&& sed -i 's/PDFMEMBER1/'${PDFMEMBER1}'/g' parameter.indat \
 	&& sed -i 's/LHAPDFNAME2/'${LHAPDFNAME2}'/g' parameter.indat \
+	&& sed -i 's/PDFMEMBER2/'${PDFMEMBER2}'/g' parameter.indat \
 	&& sed -i 's/ISSCALE/'${ISSCALE}'/g' parameter.indat \
 	&& sed -i 's/RENORMSCALE/'${RENORMSCALE}'/g' parameter.indat \
 	&& sed -i 's/FSSCALE/'${FSSCALE}'/g' parameter.indat \
@@ -171,7 +185,7 @@ for index in $(eval echo {1..$(eval echo $MAXBIN)}); do
 	&& sed -i 's/NUMBEROFEVENTS/'${NUMBEROFEVENTS}'/g' parameter.indat \
 	&& sed -i 's/RANDOMSEED/'${RANDOMSEED}'/g' parameter.indat;
     perl start.pl \
-	&& sbatch submitJobSLURM.sh run${NAME}.exe &
+	&& sbatch --exclude=node20,node21 submitJobSLURM.sh run${NAME}.exe &
     cd ../..
 done
 #------------------------------------------------

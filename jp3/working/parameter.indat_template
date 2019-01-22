@@ -67,8 +67,11 @@ LHAPDFNAME1
 # second pdf possible, see hadron type above
 LHAPDFNAME2
 #########################################################################
-# select the member set of the pdf, for central value choose 0
-0
+# select the member set of the first pdf, for central value choose 0
+PDFMEMBER1
+#########################################################################
+# select the member set of the second pdf, for central value choose 0
+PDFMEMBER2
 #########################################################################
 # call all PDF error sets (TRUE or FALSE)
 # if this flag is set to true, the preceding flag has no effect
