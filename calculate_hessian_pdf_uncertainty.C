@@ -41,9 +41,10 @@ void calculate_hessian_pdf_uncertainty(){
   }
 
   if(method == 1){ // CTEQ master formula
+    vec_histos.at(0)->Write();
     for(int i = 1; i < vec_fileNames.size(); i=i+2){
       vec_histos.at(i)->Write();
-      vec_histos.at(i-1)->Write();
+      vec_histos.at(i+1)->Write();
       for(int iBin = 1; iBin < vec_histos.at(0)->GetNbinsX(); iBin++){
 	xSecDifference = (vec_histos.at(i)->GetBinContent(iBin) - vec_histos.at(i+1)->GetBinContent(iBin)); 
 	sumError[iBin-1] += xSecDifference*xSecDifference;
@@ -52,9 +53,9 @@ void calculate_hessian_pdf_uncertainty(){
   }
 
   /*
-  vec_histos.at(0)->Write();
   double xSecDiff1, xSecDiff2;
   if(method == 2){ // following arxiv: 0605240 
+  vec_histos.at(0)->Write();
     for(int i = 1; i < vec_fileNames.size(); i=i+2){
       vec_histos.at(i)->Write();
       vec_histos.at(i+1)->Write();
