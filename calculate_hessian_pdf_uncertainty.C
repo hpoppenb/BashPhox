@@ -2,13 +2,15 @@ void calculate_hessian_pdf_uncertainty(){
 
   const int method = 1; // 0: use difference to central value; 1: use difference of both variations; 2: use max. deviation of each parameter
 
+  const int rebinFac = 1;
+
   vector<TString> vec_fileNames;
-  const TString fileNameTemplateStart = "2019_01_25_dir_frag_NLO_8160GeV_450Mevts_CT14nlo_0_EPPS16nlo_CT14nlo_Pb208_";
+  const TString fileNameTemplateStart = "2019_01_25_dir_frag_NLO_8160GeV_450Mevts_nCTEQ15np_1_1_0_nCTEQ15npFullNuc_208_82_";
   const TString fileNameTemplateEnd = "_iso2GeVinR04_scl_10_10_10.root";
-  const TString fileNameCentralValue = "2019_01_25_dir_frag_NLO_8160GeV_450Mevts_CT14nlo_0_EPPS16nlo_CT14nlo_Pb208_0_iso2GeVinR04_scl_10_10_10.root";
+  const TString fileNameCentralValue = "2019_01_25_dir_frag_NLO_8160GeV_450Mevts_nCTEQ15np_1_1_0_nCTEQ15npFullNuc_208_82_0_iso2GeVinR04_scl_10_10_10.root";
   vec_fileNames.push_back(fileNameCentralValue.Data());
   const int firstErrorPDF = 1;
-  const int lastErrorPDF = 40;
+  const int lastErrorPDF = 32; // 40 for EPPS16, 32 for nCTEQ15np
   for(int i = firstErrorPDF; i <= lastErrorPDF; i++){
     vec_fileNames.push_back(Form("%s%d%s", fileNameTemplateStart.Data(), i, fileNameTemplateEnd.Data()));
   }
@@ -20,6 +22,7 @@ void calculate_hessian_pdf_uncertainty(){
     //file_in->ls();
     vec_histos.push_back((TH1D*)file_in->Get("hp20"));
     vec_histos.at(i)->SetDirectory(0); // decouple histo from file
+    vec_histos.at(i)->Rebin(rebinFac); // to check if bad statistics are present leading to larger pdf uncertainty
     file_in->Close();
   }
 
@@ -73,7 +76,12 @@ void calculate_hessian_pdf_uncertainty(){
     if(method == 0)    sumError[iBin-1] = (1./TMath::Sqrt(2))*TMath::Sqrt(sumError[iBin-1]); // factor because both directions have
     if(method == 1)    sumError[iBin-1] = 0.5*TMath::Sqrt(sumError[iBin-1]);
     h_finalWithPdfError->SetBinError(iBin, sumError[iBin-1]);
+    // to check if uncertainty is larger for smaller binning
+    //    double relUnc = h_finalWithPdfError->GetBinError(iBin)/h_finalWithPdfError->GetBinContent(iBin);
+    //    printf("Relative uncertainty at %f: %f\n", h_finalWithPdfError->GetBinCenter(iBin), relUnc); 
   }
+
+
 
   h_finalWithPdfError->Write();
 
