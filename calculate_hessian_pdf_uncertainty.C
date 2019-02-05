@@ -1,16 +1,14 @@
-void calculate_hessian_pdf_uncertainty(){
-
-  const int method = 1; // 0: use difference to central value; 1: use difference of both variations; 2: use max. deviation of each parameter
-
-  const int rebinFac = 1;
+void calculate_hessian_pdf_uncertainty(TString fileNameTemplateStart = "2019_01_25_dir_frag_NLO_8160GeV_450Mevts_nCTEQ15np_1_1_0_nCTEQ15npFullNuc_208_82_",
+				       TString fileNameTemplateEnd = "_iso2GeVinR04_scl_10_10_10.root",
+				       TString fileNameCentralValue = "2019_01_25_dir_frag_NLO_8160GeV_450Mevts_nCTEQ15np_1_1_0_nCTEQ15npFullNuc_208_82_0_iso2GeVinR04_scl_10_10_10.root",
+				       int firstErrorPDF = 1,
+				       int lastErrorPDF = 32,
+				       int method = 1,
+				       int rebinFac = 1
+ ){
 
   vector<TString> vec_fileNames;
-  const TString fileNameTemplateStart = "2019_01_25_dir_frag_NLO_8160GeV_450Mevts_nCTEQ15np_1_1_0_nCTEQ15npFullNuc_208_82_";
-  const TString fileNameTemplateEnd = "_iso2GeVinR04_scl_10_10_10.root";
-  const TString fileNameCentralValue = "2019_01_25_dir_frag_NLO_8160GeV_450Mevts_nCTEQ15np_1_1_0_nCTEQ15npFullNuc_208_82_0_iso2GeVinR04_scl_10_10_10.root";
   vec_fileNames.push_back(fileNameCentralValue.Data());
-  const int firstErrorPDF = 1;
-  const int lastErrorPDF = 32; // 40 for EPPS16, 32 for nCTEQ15np
   for(int i = firstErrorPDF; i <= lastErrorPDF; i++){
     vec_fileNames.push_back(Form("%s%d%s", fileNameTemplateStart.Data(), i, fileNameTemplateEnd.Data()));
   }
@@ -22,7 +20,10 @@ void calculate_hessian_pdf_uncertainty(){
     //file_in->ls();
     vec_histos.push_back((TH1D*)file_in->Get("hp20"));
     vec_histos.at(i)->SetDirectory(0); // decouple histo from file
-    vec_histos.at(i)->Rebin(rebinFac); // to check if bad statistics are present leading to larger pdf uncertainty
+    if(rebinFac != 1){
+      vec_histos.at(i)->Rebin(rebinFac); // to check if bad statistics are present leading to larger pdf uncertainty
+      vec_histos.at(i)->Scale(1./rebinFac);
+    }
     file_in->Close();
   }
 
@@ -30,14 +31,27 @@ void calculate_hessian_pdf_uncertainty(){
   double xSecDifference = 0.;
 
   TFile *file_out = 0x0;
-  if (method == 0) file_out = new TFile(Form("pdfVar_methodPDF4LHC_%s%d_%d%s",fileNameTemplateStart.Data(), firstErrorPDF, lastErrorPDF, fileNameTemplateEnd.Data()),"RECREATE");
-  if (method == 1) file_out = new TFile(Form("pdfVar_CTEQMasterFormula_%s%d_%d%s",fileNameTemplateStart.Data(), firstErrorPDF, lastErrorPDF, fileNameTemplateEnd.Data()),"RECREATE");
+  if (method == 0) file_out = new TFile(Form("pdfVar_methodPDF4LHC_rebin%d_%s%d_%d%s", rebinFac, fileNameTemplateStart.Data(), firstErrorPDF, lastErrorPDF, fileNameTemplateEnd.Data()),"RECREATE");
+  if (method == 1) file_out = new TFile(Form("pdfVar_CTEQMasterFormula_rebin%d_%s%d_%d%s", rebinFac, fileNameTemplateStart.Data(), firstErrorPDF, lastErrorPDF, fileNameTemplateEnd.Data()),"RECREATE");
   file_out->cd();
+  
+  // at first, check for empty bins which = files from crashed jobs
+  for(int i = 0; i < vec_fileNames.size(); i++){
+    for(int iBin = 1; iBin < vec_histos.at(0)->GetNbinsX(); iBin++){
+      if(vec_histos.at(i)->GetBinCenter(iBin) > 1.5 && vec_histos.at(i)->GetBinContent(iBin) < 1e-9)
+	printf("empty bin found in file %s\n",vec_fileNames.at(i).Data());
+    }
+  }
+  
+  
+  //--------------------------------------------------
+  // PDF UNCERTAINTY CALCULATION
+  //--------------------------------------------------
   if(method == 0){ // following PDF4LHC recommendations for LHC Run II
     for(int i = 0; i < vec_fileNames.size(); i++){
       vec_histos.at(i)->Write();
       for(int iBin = 1; iBin < vec_histos.at(0)->GetNbinsX(); iBin++){
-	xSecDifference = (vec_histos.at(i)->GetBinContent(iBin) - vec_histos.at(0)->GetBinContent(iBin)); 
+	xSecDifference = (vec_histos.at(i)->GetBinContent(iBin) - vec_histos.at(0)->GetBinContent(iBin));
 	sumError[iBin-1] += xSecDifference*xSecDifference;
       }
     }
