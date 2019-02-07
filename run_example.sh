@@ -10,19 +10,19 @@ NEVENTS=5000000
 # only direct photons at LO
 
 # pp
-sh run_jetphox.sh $DATE CT14nlo                 CT14nlo                 1.0 1.0 1.0 dir  FALSE 5020  10.0 -10.0  0.4 2  $NEVENTS $RANDOMX
+sh run_jetphox.sh $DATE CT14nlo 0                 CT14nlo 0                 1.0 1.0 1.0 dir  FALSE 5020  10.0 -10.0  0.4 2  $NEVENTS $RANDOMX
 sleep 20
 
 # p-Pb
-sh run_jetphox.sh $DATE CT14nlo                 EPPS16nlo_CT14nlo_Pb208 1.0 1.0 1.0 dir  FALSE 5020  10.0 -10.0  0.4 2  $NEVENTS $RANDOMX
+sh run_jetphox.sh $DATE CT14nlo 0                 EPPS16nlo_CT14nlo_Pb208 0 1.0 1.0 1.0 dir  FALSE 5020  10.0 -10.0  0.4 2  $NEVENTS $RANDOMX
 sleep 20
 
 # Pb-p
-sh run_jetphox.sh $DATE EPPS16nlo_CT14nlo_Pb208 CT14nlo                 1.0 1.0 1.0 dir  FALSE 5020  10.0 -10.0  0.4 2  $NEVENTS $RANDOMX
+sh run_jetphox.sh $DATE EPPS16nlo_CT14nlo_Pb208 0 CT14nlo 0                 1.0 1.0 1.0 dir  FALSE 5020  10.0 -10.0  0.4 2  $NEVENTS $RANDOMX
 sleep 20
 
 # Pb-Pb
-sh run_jetphox.sh $DATE EPPS16nlo_CT14nlo_Pb208 EPPS16nlo_CT14nlo_Pb208 1.0 1.0 1.0 dir  FALSE 5020  10.0 -10.0  0.4 2  $NEVENTS $RANDOMX
+sh run_jetphox.sh $DATE EPPS16nlo_CT14nlo_Pb208 0 EPPS16nlo_CT14nlo_Pb208 0 1.0 1.0 1.0 dir  FALSE 5020  10.0 -10.0  0.4 2  $NEVENTS $RANDOMX
 sleep 20
 
 
@@ -32,9 +32,9 @@ sleep 20
 # e.g.:
 
 # p-Pb: limited acceptance, no boost
-sh run_jetphox.sh smallAcceptance_$DATE CT14nlo         EPPS16nlo_CT14nlo_Pb208 1.0 1.0 1.0 dir  FALSE 5020  0.9   -0.9   0.4 2  $NEVENTS $RANDOMX
+sh run_jetphox.sh smallAcceptance_$DATE CT14nlo 0         EPPS16nlo_CT14nlo_Pb208 0 1.0 1.0 1.0 dir  FALSE 5020  0.9   -0.9   0.4 2  $NEVENTS $RANDOMX
 sleep 20
 
 # p-Pb: system is boosted w.r.t. lab frame with y_boost = 0.47, so subtract y_boost from CM-rapidity 
-sh run_jetphox.sh smallAcceptance_boosted_$DATE CT14nlo EPPS16nlo_CT14nlo_Pb208 1.0 1.0 1.0 dir  FALSE 5020  0.43  -1.37  0.4 2  $NEVENTS $RANDOMX
+sh run_jetphox.sh smallAcceptance_boosted_$DATE CT14nlo 0 EPPS16nlo_CT14nlo_Pb208 0 1.0 1.0 1.0 dir  FALSE 5020  0.43  -1.37  0.4 2  $NEVENTS $RANDOMX
 sleep 20
