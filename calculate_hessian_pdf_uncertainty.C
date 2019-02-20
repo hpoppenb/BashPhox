@@ -18,7 +18,8 @@ void calculate_hessian_pdf_uncertainty(TString fileNameTemplateStart = "2019_01_
   for(int i = 0; i < vec_fileNames.size(); i++){
     TFile *file_in = new TFile(vec_fileNames.at(i));
     //file_in->ls();
-    vec_histos.push_back((TH1D*)file_in->Get("hp20"));
+    //   vec_histos.push_back((TH1D*)file_in->Get("hp20"));
+    vec_histos.push_back((TH1D*)file_in->Get("hp41"));
     vec_histos.at(i)->SetDirectory(0); // decouple histo from file
     if(rebinFac != 1){
       vec_histos.at(i)->Rebin(rebinFac); // to check if bad statistics are present leading to larger pdf uncertainty
@@ -37,7 +38,7 @@ void calculate_hessian_pdf_uncertainty(TString fileNameTemplateStart = "2019_01_
   
   // at first, check for empty bins which = files from crashed jobs
   for(int i = 0; i < vec_fileNames.size(); i++){
-    for(int iBin = 1; iBin < vec_histos.at(0)->GetNbinsX(); iBin++){
+    for(int iBin = 1; iBin <= vec_histos.at(0)->GetNbinsX(); iBin++){
       if(vec_histos.at(i)->GetBinCenter(iBin) > 1.5 && vec_histos.at(i)->GetBinContent(iBin) < 1e-9)
 	printf("empty bin found in file %s\n",vec_fileNames.at(i).Data());
     }
@@ -50,7 +51,7 @@ void calculate_hessian_pdf_uncertainty(TString fileNameTemplateStart = "2019_01_
   if(method == 0){ // following PDF4LHC recommendations for LHC Run II
     for(int i = 0; i < vec_fileNames.size(); i++){
       vec_histos.at(i)->Write();
-      for(int iBin = 1; iBin < vec_histos.at(0)->GetNbinsX(); iBin++){
+      for(int iBin = 1; iBin <= vec_histos.at(0)->GetNbinsX(); iBin++){
 	xSecDifference = (vec_histos.at(i)->GetBinContent(iBin) - vec_histos.at(0)->GetBinContent(iBin));
 	sumError[iBin-1] += xSecDifference*xSecDifference;
       }
@@ -62,7 +63,7 @@ void calculate_hessian_pdf_uncertainty(TString fileNameTemplateStart = "2019_01_
     for(int i = 1; i < vec_fileNames.size(); i=i+2){
       vec_histos.at(i)->Write();
       vec_histos.at(i+1)->Write();
-      for(int iBin = 1; iBin < vec_histos.at(0)->GetNbinsX(); iBin++){
+      for(int iBin = 1; iBin <= vec_histos.at(0)->GetNbinsX(); iBin++){
 	xSecDifference = (vec_histos.at(i)->GetBinContent(iBin) - vec_histos.at(i+1)->GetBinContent(iBin)); 
 	sumError[iBin-1] += xSecDifference*xSecDifference;
       }
@@ -86,7 +87,7 @@ void calculate_hessian_pdf_uncertainty(TString fileNameTemplateStart = "2019_01_
   */
 
   TH1D *h_finalWithPdfError = (TH1D*)vec_histos.at(0)->Clone("h_centralValueWithPdfError");
-  for(int iBin = 1; iBin < vec_histos.at(0)->GetNbinsX(); iBin++){
+  for(int iBin = 1; iBin <= vec_histos.at(0)->GetNbinsX(); iBin++){
     if(method == 0)    sumError[iBin-1] = (1./TMath::Sqrt(2))*TMath::Sqrt(sumError[iBin-1]); // factor because both directions have
     if(method == 1)    sumError[iBin-1] = 0.5*TMath::Sqrt(sumError[iBin-1]);
     h_finalWithPdfError->SetBinError(iBin, sumError[iBin-1]);
